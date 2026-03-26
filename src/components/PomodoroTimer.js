@@ -10,17 +10,6 @@ const PomodoroTimer = () => {
   const [isActive, setIsActive] = useState(false);
   const [sessionsCompleted, setSessionsCompleted] = useState(0);
 
-  useEffect(() => {
-    let interval = null;
-    if (isActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((time) => time - 1);
-      }, 1000);
-    } else if (isActive && timeLeft === 0) {
-      handleComplete();
-    }
-    return () => clearInterval(interval);
-  }, [isActive, timeLeft, handleComplete]);
 
   const handleComplete = useCallback(async () => {
     setIsActive(false);
@@ -47,6 +36,18 @@ const PomodoroTimer = () => {
       setTimeLeft(25 * 60);
     }
   }, [mode, user]);
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((time) => time - 1);
+      }, 1000);
+    } else if (isActive && timeLeft === 0) {
+      handleComplete();
+    }
+    return () => clearInterval(interval);
+  }, [isActive, timeLeft, handleComplete]);
 
   const toggleTimer = () => setIsActive(!isActive);
   const resetTimer = () => {
